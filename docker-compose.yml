@@ -1,0 +1,42 @@
+services:
+  java:
+    container_name: java17
+    image: eclipse-temurin:17-jdk
+    restart: always
+    command: tail -f /dev/null
+
+  glassfish:
+    container_name: glassfish
+    image: glassfish:4.1-jdk8
+    environment:
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+      - JAVA_OPTS=-Dfile.encoding=UTF-8 -Duser.timezone=UTC
+    ports:
+      - "4848:4848"
+      - "8081:8080"
+      - "8181:8181"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - dockerfacts-lite_db-data2:/glassfish/domains/
+
+  db:
+    image: mysql:5.7
+    container_name: db
+    ports:
+      - "3306:3306"
+    volumes:
+      - dockerfacts-lite_db_data1:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 7Guru@123
+      MYSQL_DATABASE: test1
+
+volumes:
+  dockerfacts-lite_db-data2:
+  dockerfacts-lite_db_data1:
+
+
+
+
